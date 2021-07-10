@@ -11,15 +11,19 @@ services:
       - '.:/app'
     tty: true  
     depends_on:
-      - mysql-db 
-  mysql-db:
+      - db 
+  db:
     image: 'mysql:8.0.25'
+    command: --default-authentication-plugin=mysql_native_password
     container_name: golang-hexagonal-archithecture-mysql-db
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: banking
+      MYSQL_USER: banking
       MYSQL_PASSWORD: P@ssw0rd
+      MYSQL_DATABASE: bangking
     ports:
       - '3306:3306'
     tty: true
-      
+    volumes:
+        - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+        
