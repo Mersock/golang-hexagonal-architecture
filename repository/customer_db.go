@@ -9,3 +9,12 @@ type customerRepository struct {
 func NewCustomerRepositoryDB(db *sqlx.DB) customerRepository {
 	return customerRepository{db: db}
 }
+
+func (r customerRepository) GetAll() ([]Custumer, error) {
+
+	return nil, nil
+}
+
+func (r customerRepository) GetById(Id int) (*Custumer, error) {
+	return nil, nil
+}

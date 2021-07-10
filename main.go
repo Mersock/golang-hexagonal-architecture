@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-	db, err := sqlx.Open("mysql", "root:P@ssw0rd@tcp(mysql-db:3306)/banking")
+	db, err := sqlx.Open("mysql", "banking:P@ssw0rd@tcp(db:3306)/banking")
 	if err != nil {
 		panic(err)
 	}
