@@ -1,15 +1,15 @@
 package repository
 
-type Custumer struct {
+type Customer struct {
 	CustumerID  int    `db:"customer_id"`
 	Name        string `db:"name"`
 	DateOfBirth string `db:"date_of_birth"`
 	City        string `db:"city"`
 	ZipCode     string `db:"zipcode"`
-	Status      string `db:"status"`
+	Status      int    `db:"status"`
 }
 
 type CustomerRepository interface {
-	GetAll() ([]Custumer, error)
-	GetById(int) (*Custumer, error)
+	GetAll() ([]Customer, error)
+	GetById(int) (*Customer, error)
 }

@@ -8,12 +8,12 @@ type customerRepository struct {
 	db *sqlx.DB
 }
 
-func NewCustomerRepository(db *sqlx.DB) customerRepository {
+func NewCustomerRepository(db *sqlx.DB) CustomerRepository {
 	return customerRepository{db: db}
 }
 
-func (r customerRepository) GetAll() ([]Custumer, error) {
-	customers := []Custumer{}
+func (r customerRepository) GetAll() ([]Customer, error) {
+	customers := []Customer{}
 	query := "select customer_id, name, date_of_birth, city, zipcode, status from customers"
 	err := r.db.Select(&customers, query)
 	if err != nil {
@@ -22,8 +22,8 @@ func (r customerRepository) GetAll() ([]Custumer, error) {
 	return customers, nil
 }
 
-func (r customerRepository) GetById(Id int) (*Custumer, error) {
-	customer := Custumer{}
+func (r customerRepository) GetById(Id int) (*Customer, error) {
+	customer := Customer{}
 	query := "select customer_id, name, date_of_birth, city, zipcode, status from customers where customer_id = ?"
 	err := r.db.Get(&customer, query, Id)
 	if err != nil {
