@@ -13,6 +13,7 @@ func init() {
 	config := zap.NewProductionConfig()
 	config.EncoderConfig.TimeKey = "timestamp"
 	config.EncoderConfig.EncodeTime = zapcore.ISO8601TimeEncoder
+	config.EncoderConfig.StacktraceKey = ""
 
 	log, err = config.Build(zap.AddCallerSkip(1))
 	if err != nil {
@@ -28,6 +29,11 @@ func Debug(msg string, fields ...zap.Field) {
 	log.Debug(msg, fields...)
 }
 
-func Error(msg string, fields ...zap.Field) {
-	log.Error(msg, fields...)
+func Error(msg interface{}, fields ...zap.Field) {
+	switch v := msg.(type) {
+	case error:
+		log.Error(v.Error(), fields...)
+	case string:
+		log.Error(v, fields...)
+	}
 }
