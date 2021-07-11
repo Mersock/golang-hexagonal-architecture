@@ -12,7 +12,7 @@ services:
     tty: true  
     depends_on:
       - db 
-  db:
+  mysql-db:
     image: 'mysql:8.0.25'
     command: --default-authentication-plugin=mysql_native_password
     container_name: golang-hexagonal-archithecture-mysql-db
