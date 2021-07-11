@@ -2,11 +2,9 @@ package handler
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
 	"strconv"
 
-	"github.com/Mersock/golang-hexagonal-architecture/errs"
 	"github.com/Mersock/golang-hexagonal-architecture/service"
 	"github.com/gorilla/mux"
 )
@@ -24,8 +22,7 @@ func NewCustomerHandler(custService service.CustomerService) customerHandler {
 func (h customerHandler) GetCustomers(w http.ResponseWriter, r *http.Request) {
 	customers, err := h.custService.GetCustomers()
 	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		fmt.Fprintln(w, err)
+		handleError(w, err)
 		return
 	}
 	w.Header().Set("content-type", "application/json")
@@ -36,15 +33,7 @@ func (h customerHandler) GetCustomer(w http.ResponseWriter, r *http.Request) {
 	CustomerID, _ := strconv.Atoi(mux.Vars(r)["CustomerID"])
 	customer, err := h.custService.GetCustomer(CustomerID)
 	if err != nil {
-		appErr, ok := err.(errs.AppError)
-		if ok {
-			w.WriteHeader(appErr.Code)
-			fmt.Fprintln(w, appErr.Message)
-			return
-		}
-
-		w.WriteHeader(http.StatusInternalServerError)
-		fmt.Fprintln(w, err)
+		handleError(w, err)
 		return
 	}
 	w.Header().Set("content-type", "application/json")
