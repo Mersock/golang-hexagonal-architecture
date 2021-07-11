@@ -1,6 +1,7 @@
 package service
 
 import (
+	"strings"
 	"time"
 
 	"github.com/Mersock/golang-hexagonal-architecture/errs"
@@ -17,6 +18,15 @@ func NewAccountService(accRepo repository.AccountRepository) AccountService {
 }
 
 func (s accountService) NewAccount(custId int, req NewAccountReq) (*AccountRes, error) {
+	//validate
+	if req.Amount < 5000 {
+		return nil, errs.NewValidationError("amout at least 5000")
+	}
+
+	if strings.ToLower(req.AccountType) != "saving" && strings.ToLower(req.AccountType) != "checking" {
+		return nil, errs.NewValidationError("account type should be saving or checking")
+	}
+
 	account := repository.Account{
 		CustomerID:  custId,
 		OpeningDate: time.Now().Format("2006-1-2 15:04:05"),
