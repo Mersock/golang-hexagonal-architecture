@@ -27,14 +27,19 @@ func init() {
 func main() {
 	router := mux.NewRouter()
 
-	customerRepositoryDB := repository.NewCustomerRepository(db)
-	// customerRepositoryMock := repository.NewCustomerRepositoryMock()
-	// _ = customerRepositoryMock
-	customerService := service.NewCustomerService(customerRepositoryDB)
+	customerRepository := repository.NewCustomerRepository(db)
+	customerService := service.NewCustomerService(customerRepository)
 	customerHandler := handler.NewCustomerHandler(customerService)
+
+	accountRepository := repository.NewAccountRepository(db)
+	accountService := service.NewAccountService(accountRepository)
+	accountHandler := handler.NewAccountHandler(accountService)
 
 	router.HandleFunc("/customers", customerHandler.GetCustomers).Methods(http.MethodGet)
 	router.HandleFunc("/customers/{CustomerID:[0-9]+}", customerHandler.GetCustomer).Methods(http.MethodGet)
+
+	router.HandleFunc("/customers/{CustomerID:[0-9]+}/accounts", accountHandler.GetAccounts).Methods(http.MethodGet)
+	router.HandleFunc("/customers/{CustomerID:[0-9]+}/accounts", accountHandler.NewAccount).Methods(http.MethodPost)
 
 	logs.Info("Start service at port " + config.GetString("app.port"))
 	http.ListenAndServe(fmt.Sprintf(":%v", config.GetInt("app.port")), router)
