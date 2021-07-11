@@ -20,7 +20,7 @@ services:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_USER: banking
       MYSQL_PASSWORD: P@ssw0rd
-      MYSQL_DATABASE: bangking
+      MYSQL_DATABASE: banking
     ports:
       - '3306:3306'
     tty: true
