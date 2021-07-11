@@ -34,5 +34,16 @@ func (s customerService) GetCustomers() ([]CustomerResponse, error) {
 }
 
 func (s customerService) GetCustomer(Id int) (*CustomerResponse, error) {
-	return nil, nil
+	customer, err := s.custRepo.GetById(Id)
+	if err != nil {
+		return nil, err
+	}
+
+	result := CustomerResponse{
+		CustumerID: customer.CustumerID,
+		Name:       customer.Name,
+		Status:     customer.Status,
+	}
+
+	return &result, nil
 }
