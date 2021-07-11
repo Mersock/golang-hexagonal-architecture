@@ -2,12 +2,12 @@ package main
 
 import (
 	"fmt"
-	"log"
 	"net/http"
 	"strings"
 	"time"
 
 	"github.com/Mersock/golang-hexagonal-architecture/handler"
+	"github.com/Mersock/golang-hexagonal-architecture/logs"
 	"github.com/Mersock/golang-hexagonal-architecture/repository"
 	"github.com/Mersock/golang-hexagonal-architecture/service"
 	_ "github.com/go-sql-driver/mysql"
@@ -36,7 +36,7 @@ func main() {
 	router.HandleFunc("/customers", customerHandler.GetCustomers).Methods(http.MethodGet)
 	router.HandleFunc("/customers/{CustomerID:[0-9]+}", customerHandler.GetCustomer).Methods(http.MethodGet)
 
-	log.Printf("Start service at port %v", config.GetInt("app.port"))
+	logs.Info("Start service at port " + config.GetString("app.port"))
 	http.ListenAndServe(fmt.Sprintf(":%v", config.GetInt("app.port")), router)
 }
 

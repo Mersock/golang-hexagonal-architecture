@@ -3,8 +3,8 @@ package service
 import (
 	"database/sql"
 	"errors"
-	"log"
 
+	"github.com/Mersock/golang-hexagonal-architecture/logs"
 	"github.com/Mersock/golang-hexagonal-architecture/repository"
 )
 
@@ -19,7 +19,7 @@ func NewCustomerService(custRepo repository.CustomerRepository) CustomerService 
 func (s customerService) GetCustomers() ([]CustomerResponse, error) {
 	customers, err := s.custRepo.GetAll()
 	if err != nil {
-		log.Println(err)
+		logs.Error(err.Error())
 		return nil, err
 	}
 	result := []CustomerResponse{}
@@ -41,7 +41,7 @@ func (s customerService) GetCustomer(Id int) (*CustomerResponse, error) {
 		if err == sql.ErrNoRows {
 			return nil, errors.New("customer not found")
 		}
-		log.Println(err)
+		logs.Error(err)
 		return nil, err
 	}
 
