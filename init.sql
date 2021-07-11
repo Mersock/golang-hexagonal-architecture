@@ -1,4 +1,5 @@
-CREATE DATABASE banking;
+CREATE DATABASE IF NOT EXISTS banking;
+
 USE banking;
 
 DROP TABLE IF EXISTS `customers`;
